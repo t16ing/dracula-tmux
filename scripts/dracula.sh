@@ -38,6 +38,7 @@ main()
   show_day_month=$(get_tmux_option "@dracula-day-month" false)
   show_time=$(get_tmux_option "@dracula-show-time" true)
   show_refresh=$(get_tmux_option "@dracula-refresh-rate" 5)
+  show_emoji=$(get_tmux_option "@dracula-show-emoji" false)
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -55,14 +56,26 @@ main()
 
   # Handle left icon configuration
   case $show_left_icon in
+      dracula)
+          left_icon="🧛 "
+          left_icon_prefix="🦇 "
+          ;;
       smiley)
-          left_icon="☺ ";;
+          left_icon="☺  "
+          left_icon_prefix="😈 "
+          ;;
       session)
-          left_icon="#S ";;
+          left_icon="❐ #S"
+          left_icon_prefix="  "
+          ;;
       window)
-	  left_icon="#W ";;
+	  left_icon=" #W"
+	  left_icon_prefix="  "
+          ;;
       *)
-          left_icon=$show_left_icon;;
+          left_icon=$show_left_icon
+	  left_icon_prefix="  "
+          ;;
   esac
 
   # Handle powerline option
@@ -73,7 +86,7 @@ main()
 
   # start weather script in background
   if $show_weather; then
-    $current_dir/sleep_weather.sh $show_fahrenheit $show_location &
+    $current_dir/sleep_weather.sh $show_fahrenheit $show_location $show_emoji &
   fi
 
   # Set timezone unless hidden by configuration
@@ -109,7 +122,7 @@ main()
 
   # pane border styling
   if $show_border_contrast; then
-    tmux set-option -g pane-active-border-style "fg=${light_purple}"
+    tmux set-option -g pane-active-border-style "fg=${light_purple} bg=${light_purple}"
   else
     tmux set-option -g pane-active-border-style "fg=${dark_purple}"
   fi
@@ -130,12 +143,12 @@ main()
   # Powerline Configuration
   if $show_powerline; then
 
-      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
+      tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} #{?client_prefix,${left_icon_prefix},${left_icon}} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
       tmux set-option -g  status-right ""
       powerbg=${gray}
 
       if $show_battery; then # battery
-        tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh)"
+        tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh $show_emoji)"
         powerbg=${pink}
       fi
 
@@ -155,7 +168,7 @@ main()
       fi
 
       if $show_network; then # network
-        tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh)"
+        tmux set-option -ga status-right "#[fg=${cyan},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh $show_emoji)"
         powerbg=${cyan}
       fi
 
@@ -180,12 +193,12 @@ main()
 
   # Non Powerline Configuration
   else
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
+    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} #{?client_prefix,${left_icon_prefix},${left_icon}}"
 
     tmux set-option -g  status-right ""
 
       if $show_battery; then # battery
-        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh) "
+        tmux set-option -g  status-right "#[fg=${red},bg=${gray}] #($current_dir/battery.sh $show_emoji) "
       fi
       if $show_ram_usage; then
 	tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/ram_info.sh) "
@@ -200,7 +213,7 @@ main()
       fi
 
       if $show_network; then # network
-        tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh) "
+        tmux set-option -ga status-right "#[fg=${dark_gray},bg=${cyan}] #($current_dir/network.sh $show_emoji) "
       fi
 
       if $show_weather; then # weather
