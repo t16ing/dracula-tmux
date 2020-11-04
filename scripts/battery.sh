@@ -106,10 +106,10 @@ battery_status()
                 fi
             ;;
             high)
-                echo '⚡'
+                echo '🌕'
             ;;
             charging)
-                echo '⚰️ '
+                echo '⚡'
             ;;
             *)
                 echo '⚰️ '
@@ -120,16 +120,8 @@ battery_status()
             discharging|Discharging)
                 if [ $p -lt 10 ]; then
                     echo '✝'
-                elif [ $p -lt 20 ]; then
-                    echo '♥'
-                elif [ $p -lt 40 ]; then
-                    echo '♥ ♥'
-                elif [ $p -lt 60 ]; then
-                    echo '♥ ♥ ♥'
-                elif [ $p -lt 80 ]; then
-                    echo '♥ ♥ ♥ ♥'
                 else
-                    echo '♥ ♥ ♥ ♥ ♥'
+                    echo '♥'
                 fi
             ;;
             high)
@@ -171,7 +163,7 @@ main()
     fi
 
     if $emoji; then
-        echo "${bat_stat} ${bat_fg}${p}"
+        echo "${bat_stat}${bat_fg}${p}"
     else
         echo "${bat_fg}${bat_stat} ${p}"
     fi

@@ -50,7 +50,7 @@ main()
     network="$offline_icon$(get_ssid)"
     for host in $HOSTS; do
         if ping -q -c 1 -W 1 $host &>/dev/null; then
-            network="$online_icon $(get_ssid) $benchmark"
+            network="$online_icon $(get_ssid)"
             break
         fi
     done

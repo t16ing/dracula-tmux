@@ -57,24 +57,24 @@ main()
   # Handle left icon configuration
   case $show_left_icon in
       dracula)
-          left_icon="🧛 "
-          left_icon_prefix="🦇 "
+          left_icon="🧛"
+          left_icon_prefix="🦇"
           ;;
       smiley)
-          left_icon="☺  "
-          left_icon_prefix="😈 "
+          left_icon="☺ "
+          left_icon_prefix="😈"
           ;;
       session)
           left_icon="❐ #S"
-          left_icon_prefix="  "
+          left_icon_prefix=" #S"
           ;;
       window)
 	  left_icon=" #W"
-	  left_icon_prefix="  "
+	  left_icon_prefix=" #W"
           ;;
       *)
           left_icon=$show_left_icon
-	  left_icon_prefix="  "
+	  left_icon_prefix=" "
           ;;
   esac
 
@@ -148,8 +148,8 @@ main()
       powerbg=${gray}
 
       if $show_battery; then # battery
-        tmux set-option -g  status-right "#[fg=${pink},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${dark_gray},bg=${pink}] #($current_dir/battery.sh $show_emoji)"
-        powerbg=${pink}
+        tmux set-option -g  status-right "#[fg=${dark_gray},bg=${powerbg},nobold,nounderscore,noitalics] ${right_sep}#[fg=${red},bg=${dark_gray}] #($current_dir/battery.sh $show_emoji)"
+        powerbg=${dark_gray}
       fi
 
       if $show_ram_usage; then
@@ -193,7 +193,7 @@ main()
 
   # Non Powerline Configuration
   else
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} #{?client_prefix,${left_icon_prefix},${left_icon}}"
+    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} #{?client_prefix,${left_icon_prefix},${left_icon}} "
 
     tmux set-option -g  status-right ""
 
