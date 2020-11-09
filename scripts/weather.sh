@@ -60,12 +60,7 @@ forecast_unicode()
 
 main()
 {
-    # process should be cancelled when session is killed
-    if ping -q -c 1 -W 1 wttr.in &>/dev/null; then
-        echo "$(display_weather)$(display_location)"
-    else
-        echo ""
-    fi
+    echo "$(display_weather)$(display_location)"
 }
 
 #run main driver program
