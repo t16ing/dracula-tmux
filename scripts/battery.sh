@@ -105,14 +105,14 @@ battery_status()
                     echo '💚';
                 fi
             ;;
-            high|High)
+            high|High|Full)
                 echo '🌕'
             ;;
             charging|Charging)
                 echo '⚡'
             ;;
             *)
-                echo '⚰️ '
+                echo '⚰️ '$status
             ;;
         esac
     else
@@ -124,7 +124,7 @@ battery_status()
                     echo '♥'
                 fi
             ;;
-            high|High)
+            high|High|Full)
                 echo ''
             ;;
             charging|Charging)
