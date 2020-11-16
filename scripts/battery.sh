@@ -119,7 +119,7 @@ battery_status()
         case $status in
             discharging|Discharging)
                 if [ $p -lt 10 ]; then
-                    echo '✝'
+                    echo '♱'
                 else
                     echo '♥'
                 fi
